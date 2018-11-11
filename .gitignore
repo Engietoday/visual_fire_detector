@@ -1,4 +1,5 @@
 src/sens2jpg/src/*.json
 build
 devel
-
+.gitignore
+.catkin_workspace
