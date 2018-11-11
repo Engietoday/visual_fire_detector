@@ -30,15 +30,29 @@ def write_image(path,Im):
 
 def main(args):
     file_id = ''
+    file_id_array = []
+    num_of_images = 5
+    for i in range(0,num_of_images+1):
+        file_id_array.append('')
+
+    count = 0
+    array_indx = 1
     google_api.init_api()
     rospy.init_node('ImageMsg2Image', anonymous=True)
     Im = ImageMsg2Image()
-    rate = rospy.Rate(.2) # 1hz
+    rate = rospy.Rate(.5) # 1hz
     try:
         while not rospy.is_shutdown():
-            google_api.deleteImage(file_id)
             write_image('/home/engietoday/Desktop/test/test.jpg',Im.cv_image)
-            file_id = google_api.uploadImage()
+            count = count + 1
+            file_id = google_api.uploadImage(count)
+            for i in range(0,num_of_images):
+                file_id_array[i] = file_id_array[i+1]
+            file_id_array[num_of_images] = file_id
+            google_api.deleteImage(file_id_array[0])
+            print(file_id_array)
+            if count == num_of_images:
+                count = 0
             rate.sleep()        
 
     except KeyboardInterrupt:

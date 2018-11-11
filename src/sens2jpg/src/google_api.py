@@ -52,10 +52,10 @@ def init_api():
         creds = tools.run_flow(flow, store)
     service = build('drive', 'v3', http=creds.authorize(Http()))
 
-def uploadImage():
+def uploadImage(count):
     global service
     fid = '1UVjQ_k8QTWMlz07f8iCYiBJIqsXMqQKm'
-    file_metadata = {'name': ['test.jpg'], "parents": [fid]}
+    file_metadata = {'name': ['test'+str(count)+'.jpg'], "parents": [fid]}
     media = MediaFileUpload('/home/engietoday/Desktop/test/test.jpg',mimetype='image/jpeg')
     file = service.files().create(body=file_metadata,media_body=media,fields='id').execute()
     print 'File ID: %s' % file.get('id')
